@@ -1,0 +1,2 @@
+* handle add or delete exceptions
+* R komutu Time received sonunda nokta olacak mı?
