@@ -12,11 +12,13 @@ public class EmailApplication {
 
         Scanner sc = new Scanner(System.in);
 
-        while (true) {
+        boolean loopFlag = true;
+
+        while (loopFlag) {
+            System.out.println("");
             String inputLine = sc.nextLine();
 
             String[] commands = inputLine.split(" ", 2);
-
             switch (commands[0]) { // Command type (N, R, A, D, S, U, C)
                 // New Email
                 case "N":
@@ -118,10 +120,36 @@ public class EmailApplication {
                 }
                 // Clear Folder
                 case "C":
+                    String folderName = commands[1];
+                    switch (folderName) {
+                        case "Inbox": {
+                            System.out.println(Inbox.truncate(Trash)); // Transfer to Trash
+                            break;
+                        }
+
+                        case "Archive": {
+                            System.out.println(Archive.truncate(Trash)); // Transfer to Trash
+                            break;
+                        }
+
+                        case "Trash": {
+                            System.out.println(Trash.truncate(null)); // Directly truncate
+                            break;
+                        }
+
+                        default:
+                            System.out.println("Unknown Folder Name!");
+                            break;
+                    }
 
                     break;
 
+                case "Q": {
+                    loopFlag = false;
+                    break;
+                }
             }
         }
+        sc.close();
     }
 }

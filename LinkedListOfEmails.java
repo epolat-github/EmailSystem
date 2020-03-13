@@ -46,6 +46,36 @@ public class LinkedListOfEmails {
         System.out.format("No such email.\n", id);
     }
 
+    // Delete all folder data
+    public String truncate(LinkedListOfEmails folder) {
+
+        if (this.head == null) {
+            return "Folder is already empty!\n";
+        }
+
+        if (folder == null) { // Empty Trash
+            for (int i = 0; i < this.count; i++) {
+                this.delete();
+            }
+        } else { // Other than Trash
+            for (int i = 0; i < this.count; i++) {
+                folder.addEmail(this.delete());
+            }
+        }
+
+        return "Folder cleared!\n";
+    }
+
+    // Delete from end
+    public Email delete() {
+        Node deleted = this.head;
+        this.head = this.head.next;
+        this.count--;
+
+        return deleted.data;
+    }
+
+    // Delete specific email
     public Email delete(int id) {
         Node temp = this.head, prev = null;
 
@@ -77,7 +107,7 @@ public class LinkedListOfEmails {
 
         for (int i = 0; i < this.count; i++) {
             if (flag == temp.data.getFlag()) {
-                System.out.print(temp.data);
+                System.out.print(temp.data); // Email class toString()
             }
 
             temp = temp.next;
@@ -87,19 +117,31 @@ public class LinkedListOfEmails {
     @Override
     public String toString() {
         String output = "";
-        Node temp = head;
+        Node temp = this.head;
 
+        if (temp == null) { // if folder is empty
+            return "Folder is empty!\n";
+        }
 
-        System.out.println("Email   Subject     Body    Time    Read");
+        System.out.printf("%s   %-25s%-40s %s    %s%n", "Email", "Subject", "Body", "Time", "Read");
 
         for (int i = 0; i < this.count; i++) {
             Email email = temp.data;
-            output += String.format("%d %.25s  %40s  %d  %s\n", email.getID(), email.getSubject(), email.getMessage(),
+            String message = email.getMessage();
+            String trimmedMessage = message.substring(0, 37).concat("...");
+            output += String.format("%d    %-25s%-40s %d %s\n", email.getID(), email.getSubject(), trimmedMessage,
                     email.getTime(), email.getFlag() ? "Yes" : "No");
 
             temp = temp.next;
         }
         return output;
+    }
+
+    /**
+     * @return the count
+     */
+    public int getCount() {
+        return count;
     }
 
 }
